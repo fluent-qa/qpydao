@@ -21,7 +21,7 @@ keywords = ["python database access object lib", "decorator", "repository"]
 license = { text = "UNDEFINED" }
 name = "qpydao"
 readme = "README.md"
-requires-python = ">=3.11"
+requires-python = ">=3.10"
 dependencies = [
   #   "pydantic-settings",
   #   "typer[all]",
