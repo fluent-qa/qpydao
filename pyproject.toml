@@ -7,7 +7,7 @@ name = "qpydao"
 version = "0.1.0"
 description = "qpydao is an esay database access object lib"
 readme = "README.md"
-requires-python = ">=3.9"
+requires-python = ">3.9"
 dependencies = [
   "pydantic>=2.7.4",
   "alembic>=1.13.1",
@@ -15,7 +15,7 @@ dependencies = [
   "sqlmodel>=0.0.19",
   "loguru>=0.7.2",
   "rich>=13.7.1",
-  "qpyconf @ git+https://github.com/fluent-qa/qpyconf.git@main",
+  "qpyconf",
   "psycopg2-binary>=2.9.10",
   "psycopg>=3.2.0",
 ]
@@ -42,9 +42,11 @@ default-groups = ["dev"]
 
 [tool.uv.sources]
 qpyci = { git = "https://github.com/fluent-qa/qpyci.git", rev = "main" }
+qpyconf = { git = "https://github.com/fluent-qa/qpyconf.git", rev = "main" }
 
 [tool.hatch.build.targets.wheel]
-packages = ["qpydao"]
+packages = ["src/qpydao"]
+
 [tool.hatch.metadata]
 allow-direct-references = true
 
