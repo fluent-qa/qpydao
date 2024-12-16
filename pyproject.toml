@@ -7,7 +7,7 @@ name = "qpydao"
 version = "0.1.0"
 description = "qpydao is an esay database access object lib"
 readme = "README.md"
-requires-python = ">=3.12"
+requires-python = ">=3.9"
 dependencies = [
   "pydantic>=2.7.4",
   "alembic>=1.13.1",
@@ -28,15 +28,13 @@ badge = "qpyci.commands:generate_badge"
 check_format = "ci:check_format"
 
 [dependency-groups]
-lint = [
-  "ruff>=0.8.3",
-]
+lint = ["ruff>=0.8.3"]
 dev = [
   "allure-pytest>=2.13.5",
   "pytest-cov>=6.0.0",
   "pytest>=8.3.4",
   "coverage-badge>=1.1.2",
-  "qpyci" 
+  "qpyci",
 ]
 
 [tool.uv]
@@ -57,21 +55,10 @@ allow-direct-references = true
 [tool.ruff]
 line-length = 120
 target-version = "py39"
-include = [
-  "qpydao/**/*.py",
-  "tests/**/*.py",
-  "docs/**/*.py",
-]
+include = ["qpydao/**/*.py", "tests/**/*.py", "docs/**/*.py"]
 
 [tool.ruff.lint]
-extend-select = [
-  "Q",
-  "RUF100",
-  "C90",
-  "UP",
-  "I",
-  "D",
-]
+extend-select = ["Q", "RUF100", "C90", "UP", "I", "D"]
 flake8-quotes = { inline-quotes = "single", multiline-quotes = "double" }
 isort = { combine-as-imports = true, known-first-party = ["qpydao"] }
 mccabe = { max-complexity = 15 }
@@ -101,14 +88,18 @@ quote-style = "single"
 testpaths = ["tests"]
 pythonpath = ["src"]
 addopts = [
-  "--alluredir", "allure-results",
+  "--alluredir",
+  "allure-results",
   "--clean-alluredir",
-  "-l", "-s", "--durations", "0",
-  "--cov", "qpydao"
+  "-l",
+  "-s",
+  "--durations",
+  "0",
+  "--cov",
+  "qpydao",
 ]
 log_cli = true
 log_cli_level = "info"
 log_date_format = "%Y-%m-%d %H:%M:%S"
 log_format = "%(asctime)s %(levelname)s %(message)s"
 minversion = "6.0"
-
