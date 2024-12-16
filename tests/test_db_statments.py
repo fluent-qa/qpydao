@@ -5,7 +5,7 @@
 import pytest
 from sqlmodel import select
 
-from qpydao.core.sql_utils import SqlResultMapper
+from qpydao import SqlResultMapper
 from tests.fixtures_db import Hero, dao, init_db_test
 
 init_db_test()

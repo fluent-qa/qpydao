@@ -1,0 +1,117 @@
+[build-system]
+requires = ["mina-build>=0.2.5"]
+build-backend = "pdm.backend"
+
+#[build-system]
+#requires = ["pdm-backend", "pdm-polylith-workspace"]
+#build-backend = "pdm.backend"
+
+[project]
+authors = [{ name = "fluentqa-team", email = "fluent-qa@fluentqa.com" }]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+]
+description = "A Simple Database Access Object Lib"
+dynamic = ["version"]
+keywords = ["python database access object lib", "decorator", "repository"]
+license = { text = "UNDEFINED" }
+name = "qpydao"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+  #   "pydantic-settings",
+  #   "typer[all]",
+  "pydantic>=2.7.4",
+  "alembic>=1.13.1",
+  "sqlalchemy>=2.0.30",
+  "sqlmodel>=0.0.19",
+  "loguru>=0.7.2",
+  "rich>=13.7.1",
+  "psycopg[pool]>=3.1.19",
+  "qpyconf @ git+https://github.com/fluent-qa/qpyconf.git@main",
+  "ruff>=0.7.2",
+]
+
+[project.urls]
+issue = "https://github.com/fluent-qa/qpydao/issues"
+repository = "https://github.com/fluent-qa/qpydao"
+
+[tool.pytest.ini_options]
+addopts = "-l -s --durations=0"
+log_cli = true
+log_cli_level = "info"
+log_date_format = "%Y-%m-%d %H:%M:%S"
+log_format = "%(asctime)s %(levelname)s %(message)s"
+minversion = "6.0"
+cov = "qpydao"
+cov-report = "html"
+
+[tool.coverage]
+
+[tool.coverage.report]
+fail_under = 80
+
+[tool.coverage.run]
+source = ["src/qpydao"]
+
+[tool.ruff]
+extend-exclude = ["template"]
+fix = true
+src = ["src"]
+
+[tool.ruff.lint]
+select = [
+  "B",      # flake8-bugbear
+  "D",      # pydocstyle
+  "E",      # pycodestyle error
+  "F",      # Pyflakes
+  "I",      # isort
+  "RUF100", # Unused noqa directive
+  "S",      # flake8-bandit
+  "SIM",    # flake8-simplify
+  "UP",     # pyupgrade
+  "W",      # pycodestyle warning
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["S101", "D103", "D102", "D101"]
+"src/*" = ["D103", "D102", "D101"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+
+[tool.tomlsort]
+all = true
+in_place = true
+trailing_comma_inline_array = true
+
+[tool.pdm]
+distribution = true
+
+[tool.pdm.scripts]
+lint = "ruff check --fix --unsafe-fixes"
+fmt = "ruff format . --check"
+test = "pytest "
+docs = "mkdocs serve"
+docs-deploy = "mkdocs gh-deploy --force"
+cleanup = "sh scripts/cleanup.sh"
+purge = "rm -rf .venv && sh scripts/cleanup.sh"
+
+[tool.pdm.dev-dependencies]
+docs = ["mkdocs-material>=9.5.27", "mkdocs>=1.6.0"]
+lint = ["ruff>=0.4.9"]
+test = ["pytest-cov>=5.0.0", "pytest>=8.2.2", "pytest-asyncio>=0.23.7"]
+
+
+[[tool.pdm.source]]
+name = "mirrors"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple/"
+
+[[tool.pdm.source]]
+name = "douban"
+url = "https://pypi.doubanio.com/simple/"

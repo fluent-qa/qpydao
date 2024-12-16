@@ -1,117 +1,114 @@
 [build-system]
-requires = ["mina-build>=0.2.5"]
-build-backend = "pdm.backend"
-
-#[build-system]
-#requires = ["pdm-backend", "pdm-polylith-workspace"]
-#build-backend = "pdm.backend"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
 [project]
-authors = [{ name = "fluentqa-team", email = "fluent-qa@fluentqa.com" }]
-classifiers = [
-  "Development Status :: 3 - Alpha",
-  "Operating System :: OS Independent",
-  "Programming Language :: Python :: 3.10",
-  "Programming Language :: Python :: 3.11",
-  "Programming Language :: Python :: 3.12",
-]
-description = "A Simple Database Access Object Lib"
-dynamic = ["version"]
-keywords = ["python database access object lib", "decorator", "repository"]
-license = { text = "UNDEFINED" }
 name = "qpydao"
+version = "0.1.0"
+description = "qpydao is an esay database access object lib"
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.12"
 dependencies = [
-  #   "pydantic-settings",
-  #   "typer[all]",
   "pydantic>=2.7.4",
   "alembic>=1.13.1",
   "sqlalchemy>=2.0.30",
   "sqlmodel>=0.0.19",
   "loguru>=0.7.2",
   "rich>=13.7.1",
-  "psycopg[pool]>=3.1.19",
   "qpyconf @ git+https://github.com/fluent-qa/qpyconf.git@main",
-  "ruff>=0.7.2",
+  "psycopg2-binary>=2.9.10",
+  "psycopg>=3.2.0",
 ]
 
-[project.urls]
-issue = "https://github.com/fluent-qa/qpydao/issues"
-repository = "https://github.com/fluent-qa/qpydao"
+
+[project.scripts]
+cleanup = "qpyci.commands:clean"
+cov = "ci:coverage"
+badge = "qpyci.commands:generate_badge"
+check_format = "ci:check_format"
+
+[dependency-groups]
+lint = [
+  "ruff>=0.8.3",
+]
+dev = [
+  "allure-pytest>=2.13.5",
+  "pytest-cov>=6.0.0",
+  "pytest>=8.3.4",
+  "coverage-badge>=1.1.2",
+  "qpyci" 
+]
+
+[tool.uv]
+default-groups = ["dev"]
+
+[tool.uv.sources]
+qpyci = { git = "https://github.com/fluent-qa/qpyci.git", rev = "main" }
+
+[tool.hatch.build.targets.wheel]
+packages = ["qpydao"]
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.build.targets.wheel.force-include]
+"ci.py" = "ci.py"
+
+
+[tool.ruff]
+line-length = 120
+target-version = "py39"
+include = [
+  "qpydao/**/*.py",
+  "tests/**/*.py",
+  "docs/**/*.py",
+]
+
+[tool.ruff.lint]
+extend-select = [
+  "Q",
+  "RUF100",
+  "C90",
+  "UP",
+  "I",
+  "D",
+]
+flake8-quotes = { inline-quotes = "single", multiline-quotes = "double" }
+isort = { combine-as-imports = true, known-first-party = ["qpydao"] }
+mccabe = { max-complexity = 15 }
+ignore = [
+  "D100", # ignore missing docstring in module
+  "D102", # ignore missing docstring in public method
+  "D104", # ignore missing docstring in public package
+  "D105", # ignore missing docstring in magic methods
+  "D107", # ignore missing docstring in __init__ methods
+]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.format]
+# don't format python in docstrings, pytest-examples takes care of it
+docstring-code-format = false
+quote-style = "single"
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**/*.py" = ["D"]
+"docs/**/*.py" = ["D"]
+"src/qpydao/**/*.py" = ["D101", "D103"]
+
 
 [tool.pytest.ini_options]
-addopts = "-l -s --durations=0"
+testpaths = ["tests"]
+pythonpath = ["src"]
+addopts = [
+  "--alluredir", "allure-results",
+  "--clean-alluredir",
+  "-l", "-s", "--durations", "0",
+  "--cov", "qpydao"
+]
 log_cli = true
 log_cli_level = "info"
 log_date_format = "%Y-%m-%d %H:%M:%S"
 log_format = "%(asctime)s %(levelname)s %(message)s"
 minversion = "6.0"
-cov = "qpydao"
-cov-report = "html"
 
-[tool.coverage]
-
-[tool.coverage.report]
-fail_under = 80
-
-[tool.coverage.run]
-source = ["src/qpydao"]
-
-[tool.ruff]
-extend-exclude = ["template"]
-fix = true
-src = ["src"]
-
-[tool.ruff.lint]
-select = [
-  "B",      # flake8-bugbear
-  "D",      # pydocstyle
-  "E",      # pycodestyle error
-  "F",      # Pyflakes
-  "I",      # isort
-  "RUF100", # Unused noqa directive
-  "S",      # flake8-bandit
-  "SIM",    # flake8-simplify
-  "UP",     # pyupgrade
-  "W",      # pycodestyle warning
-]
-
-[tool.ruff.lint.per-file-ignores]
-"tests/*" = ["S101", "D103", "D102", "D101"]
-"src/*" = ["D103", "D102", "D101"]
-
-[tool.ruff.lint.pydocstyle]
-convention = "google"
-
-
-[tool.tomlsort]
-all = true
-in_place = true
-trailing_comma_inline_array = true
-
-[tool.pdm]
-distribution = true
-
-[tool.pdm.scripts]
-lint = "ruff check --fix --unsafe-fixes"
-fmt = "ruff format . --check"
-test = "pytest "
-docs = "mkdocs serve"
-docs-deploy = "mkdocs gh-deploy --force"
-cleanup = "sh scripts/cleanup.sh"
-purge = "rm -rf .venv && sh scripts/cleanup.sh"
-
-[tool.pdm.dev-dependencies]
-docs = ["mkdocs-material>=9.5.27", "mkdocs>=1.6.0"]
-lint = ["ruff>=0.4.9"]
-test = ["pytest-cov>=5.0.0", "pytest>=8.2.2", "pytest-asyncio>=0.23.7"]
-
-
-[[tool.pdm.source]]
-name = "mirrors"
-url = "https://pypi.tuna.tsinghua.edu.cn/simple/"
-
-[[tool.pdm.source]]
-name = "douban"
-url = "https://pypi.doubanio.com/simple/"

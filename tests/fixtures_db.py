@@ -2,8 +2,7 @@ from __future__ import annotations
 
 from datetime import datetime
 
-from qpydao import BaseIDModel, databases
-from qpydao.bootstrap import init_database
+from qpydao import BaseIDModel, databases, init_database
 
 # db_config = DatabaseConfig(db_url="sqlite:///test.db")
 dao = databases.get_db("default")

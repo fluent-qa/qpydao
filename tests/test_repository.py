@@ -1,5 +1,4 @@
-from qpydao import databases
-from qpydao.core.decorators import native_sql
+from qpydao import native_sql
 from qpydao.repository import RepositoryMeta
 
 from .fixtures_db import *
