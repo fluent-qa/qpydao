@@ -41,7 +41,6 @@ class DatabaseConfig(BaseModel):
             _validate_param("port", self.host)
             _validate_param("database", self.host)
 
-
 class SqlRequestModel(BaseModel):
     """SqlRequestModel: Model for SQLRequest."""
 

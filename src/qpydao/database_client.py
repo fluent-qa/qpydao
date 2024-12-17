@@ -36,7 +36,7 @@ class DatabaseClient:
     """Database client, both synchronous and asynchronous."""
 
     def __init__(self, config: DatabaseConfig = None):
-        self.config = config
+        self.config:DatabaseConfig = config
         self._engine = None
         self._async_engine = None
 
@@ -249,7 +249,7 @@ class Databases(metaclass=SingletonMeta):
 
 
 databases: Databases = Databases()
-db = databases.default_client()
+db:DatabaseConfig = databases.default_client()
 
 def init_database(database: DatabaseClient, schema_name: str = ""):
     """Init postgresql database
