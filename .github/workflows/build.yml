@@ -10,7 +10,7 @@ jobs:
     - name: checkout repo
       uses: actions/checkout@v4
     - name: Install uv
-      uses: astral-sh/setup-uv@v4
+      uses: astral-sh/setup-uv@v5
       with:
         enable-cache: true  # Enable caching for faster builds
         version: "latest"  # Specify the version of uv to install
